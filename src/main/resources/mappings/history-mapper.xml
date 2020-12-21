@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="history">
+	
+	<!-- 강의 시작시간 저장하기 -->
+	<insert id="startAt" parameterType="map">
+		INSERT INTO HISTORY VALUES (LOG_CODE.NEXTVAL, #{l_code}, TO_DATE(#{start_time}, 'YYYY-MM-DD HH24:MI:SS'), null )
+	</insert>
+	<!-- 강의 끝나는 시간 저장하기 -->
+	<update id="endAt" parameterType="map">
+		UPDATE HISTORY SET END_STUDY_TIME = TO_DATE(#{end_time},'YYYY-MM-DD HH24:MI:SS') WHERE LOG_CODE = #{log_code}
+	</update>
+	<!-- 기록 가져오기 -->
+	<select id="getStartAtClass" parameterType="string" resultType="history">
+		SELECT LOG_CODE, L_CODE, START_STUDY_TIME, END_STUDY_TIME
+		FROM HISTORY WHERE LOG_CODE = #{log_code}
+	</select>
+	<!-- 수정된 기록 가져오기(끝나는 시간 수정) -->
+	<select id="getUpdateHistory" parameterType="string" resultType="history">
+		SELECT LOG_CODE, L_CODE, START_STUDY_TIME ,END_STUDY_TIME 
+		FROM HISTORY WHERE LOG_CODE = #{log_code}
+	</select>
+	<!-- 전체 기록 가져오기 -->
+	<select id="getHistroyList" resultType="history">
+		SELECT * FROM HISTORY
+	</select>
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+		<!-- 회원 -->
+		<typeAlias alias="member" type="com.lesson.site.member.MemberVO"/>
+		<!-- 카테고리 -->
+		<typeAlias alias="category" type="com.lesson.site.category.CategoryVO"/>
+		<!-- 강사 -->
+		<typeAlias alias="tutor" type="com.lesson.site.tutor.TutorVO"/>
+		<!-- 강의 -->
+		<typeAlias alias="class" type="com.lesson.site.Class.ClassVO"/>
+		<!-- 수강 -->
+		<typeAlias alias="lecture" type="com.lesson.site.lecture.LectureVO"/>
+		<!-- 결제내역 -->
+		<typeAlias alias="pay" type="com.lesson.site.pay.PayVO"/>
+		<!-- 수강중인 강의 객체 -->
+		<typeAlias alias="getMyLecture" type="com.lesson.site.lecture.GetMyLectureVO"/>
+		<!-- 강의 기록 -->
+		<typeAlias alias="history" type="com.lesson.site.history.HistoryVO"/>
+		
+	</typeAliases>
+	
+	
+	
+	<!-- SQL 작성파일인 매퍼 파일 위치 지정 -->
+	<mappers>
+		<!-- 회원 -->	
+		<mapper resource="mappings/member-mapper.xml" />
+		<!-- 카테고리 -->
+		<mapper resource="mappings/category-mapper.xml" />
+		<!-- 강사 -->
+		<mapper resource="mappings/tutor-mapper.xml"/>
+		<!-- 강의 -->
+		<mapper resource="mappings/class-mapper.xml"/>
+		<!-- 수강 -->
+		<mapper resource="mappings/lecture-mapper.xml" />
+		<!-- 결제내역 -->
+		<mapper resource="mappings/pay-mapper.xml" />
+		<!-- 강의 기록 -->
+		<mapper resource="mappings/history-mapper.xml" />
+	</mappers>
+</configuration>
+
+
+
+
+
+
+

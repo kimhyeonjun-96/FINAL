@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="category">
+
+	<select id="getCategoryList" resultType="category">
+		SELECT * FROM CATEGORY
+	</select>
+	
+	<!-- 카테고리별 강의 가져오기 JOIN문 -->
+	<resultMap type="com.lesson.site.member.MemberVO" id="memberMap">
+		<result property="m_code" column="m_code"/>
+		<result property="nickname" column="nickname"/>
+		<result property="pw" column="pw"/>
+		<result property="email" column="email"/>
+		<result property="istutor" column="istutor"/>
+		<result property="memberCertification" column="memberCertification"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.tutor.TutorVO" id="tutorMap">
+		<result property="t_code" column="t_code"/>
+		<result property="m_code" column="m_code"/>
+		<result property="career" column="career"/>
+		<result property="introduction" column="introduction"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.category.CategoryVO" id="categoryMap">
+		<result property="c_code" column="c_code"/>
+		<result property="category_name" column="category_name"/>
+	</resultMap>
+	
+	<resultMap type="com.lesson.site.Class.ClassVO" id="classMap">
+		<result property="s_code" column="s_code"/>
+		<result property="t_code" column="t_code"/>
+		<result property="c_code" column="c_code"/>
+		<result property="class_name" column="class_name"/>
+		<result property="subject_name" column="subject_name"/>
+		<result property="pay" column="pay"/>
+		<result property="class_plan" column="class_plan"/>
+		<result property="class_totla_number" column="class_totla_number"/>
+		<result property="class_level" column="class_level"/>
+		<result property="class_img" column="class_img"/>
+	</resultMap>
+	
+	<resultMap type="com.lesson.site.Class.GetAllClass" id="getAllClass">
+		<collection property="classs" resultMap="classMap"/>
+		<collection property="category" resultMap="categoryMap"/>
+		<collection property="tutor" resultMap="tutorMap" />
+		<collection property="member" resultMap="memberMap" />
+	</resultMap>
+	
+	<!-- 지금 카테고리가 많지 않아 고정해서 함. 원래는 버튼이 눌러지면 값을 가져와야 함!! -->
+	<select id="getCategory01" resultMap="getAllClass">
+		SELECT *
+		FROM CATEGORY ca
+		JOIN CLASS c
+		ON ca.c_code = c.c_code
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE ca.c_code = 'C_01'
+	</select>
+	
+	<select id="getCategory02" resultMap="getAllClass">
+		SELECT *
+		FROM CATEGORY ca
+		JOIN CLASS c
+		ON ca.c_code = c.c_code
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE ca.c_code = 'C_02'
+	</select>
+	
+	<select id="getCategory03" resultMap="getAllClass">
+		SELECT *
+		FROM CATEGORY ca
+		JOIN CLASS c
+		ON ca.c_code = c.c_code
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE ca.c_code = 'C_03'
+	</select>
+	
+	<select id="getCategory04" resultMap="getAllClass">
+		SELECT *
+		FROM CATEGORY ca
+		JOIN CLASS c
+		ON ca.c_code = c.c_code
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE ca.c_code = 'C_04'
+	</select>
+	
+	<select id="getCategory05" resultMap="getAllClass">
+		SELECT *
+		FROM CATEGORY ca
+		JOIN CLASS c
+		ON ca.c_code = c.c_code
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE ca.c_code = 'C_05'
+	</select>
+	
+	
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

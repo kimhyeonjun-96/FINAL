@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="tutor">
+	<!-- 강사들 다 가져오기 -->
+	<select id="getTutorList" resultType="tutor">
+		SELECT * FROM TUTOR
+	</select>
+	<!-- 강사 정보 수정 (경력, 자소서)-->
+	<update id="updateTutor" parameterType="map">
+		UPDATE TUTOR SET CAREER = #{career}, INTRODUCTION = #{introduction}
+		WHERE T_CODE = #{t_code}
+	</update>
+	
+	<!-- 튜터코드로 강사정보 가져오기 -->
+	<select id="getTutor" parameterType="string" resultType="tutor">
+		SELECT * FROM TUTOR WHERE T_CODE = #{t_code}
+	</select>
+	
+	<!-- 튜터정보 삭제(탈퇴) -->
+	<delete id="deleteTutor" parameterType="string">
+		DELETE FROM TUTOR WHERE T_CODE = #{t_code}
+	</delete>
+	
+	<!-- 강의 등록 -->
+	<insert id="addClass" parameterType="class">
+		INSERT INTO CLASS VALUES(S_CODE.NEXTVAL, #{t_code}, #{c_code}, #{class_name}, #{pay}, #{class_plan}, #{class_totla_number}, #{subject_name}, #{class_level}, #{class_img})
+	</insert>
+	
+	<!-- 내 강의 전체 조회하기 -->
+	<select id="getClassList" parameterType="string" resultType="class">
+		SELECT * FROM CLASS WHERE T_CODE = #{t_code}
+	</select>
+	
+	<!-- 내 특정 강의 삭제 -->
+	<delete id="deleteClass" parameterType="string">
+		DELETE FROM CLASS WHERE S_CODE = #{s_code}
+	</delete>
+	
+	<!-- 내 특정 강의 수정 -->
+	<update id="modifyClass" parameterType="class">
+		UPDATE CLASS SET PAY = #{pay}, CLASS_PLAN = #{class_plan}, CLASS_TOTLA_NUMBER = #{class_totla_number}
+		WHERE S_CODE = #{s_code}
+	</update>
+	
+	<!-- 내 특정강의 가져오기 -->
+	<select id="getClassOne" parameterType="string" resultType="class">
+		SELECT * FROM CLASS WHERE S_CODE = #{s_code}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<!-- 회원가입 전 닉네임과 비밀번호 중복 검사 -->
+	<select id="checkNickPassword" parameterType="string"
+		resultType="member">
+		SELECT * FROM MEMBER WHERE NICKNAME = #{nickname}
+	</select>
+	<!-- 회원가입 -->
+	<insert id="joinMember" parameterType="member">
+		INSERT INTO MEMBER
+		(M_CODE, NICKNAME, PW, EMAIL)
+		VALUES('normal'||M_CODE.NEXTVAL, #{nickname}, #{pw}, #{email})
+	</insert>
+	
+	
+	<!-- 로그인 -->
+	<select id="loginMember" parameterType="map" resultType="member">
+		SELECT * FROM MEMBER WHERE NICKNAME = #{nickname} AND PW = #{pw}
+	</select>
+	<!-- 로그인 시 닉네임 확인 -->
+	<select id="getMemberNick" parameterType="string" resultType="string">
+		SELECT NICKNAME FROM MEMBER WHERE M_CODE = #{m_code}
+	</select>
+	<!-- 로그인 시 비밀번호 확인 -->
+	<select id="getMemberPw" parameterType="string" resultType="string">
+		SELECT PW FROM MEMBER WHERE M_CODE = #{m_code}
+	</select>
+	<!-- 이메일 인증을 위한 처리 -->
+	<insert id="createAuthKey">
+		INSERT INTO MEMBERAUTH VALUES (#{email}, #{authKey})
+	</insert>
+	<update id="memberAuth">
+		<!-- <![CDATA[UPDATE MEMBER SET memberCertification = '1' WHERE (SELECT count(*) FROM MEMBERAUTH WHERE email = #{email}) > 0]]> -->
+		UPDATE MEMBER SET memberCertification = '1' WHERE EMAIL = #{email}
+	</update>
+	<!-- 이메일 인증을 위한 처리 끝 -->
+	
+	
+	<!-- 회원정보 수정 -->
+	<update id="updateMember" parameterType="map">
+		UPDATE MEMBER SET PW = #{pw}, EMAIL = #{email}
+		WHERE M_CODE = #{m_code}
+	</update>
+	<!-- 수정된 회원정보 가져오기 -->
+	<select id="getUpdateMember" parameterType="string" resultType="member">
+		SELECT * FROM MEMBER WHERE M_CODE = #{m_code}
+	</select>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteMember" parameterType="string">
+		DELETE FROM MEMBER WHERE M_CODE = #{m_code}
+	</delete>
+	
+	<!-- 소셜회원 -->
+	<!-- 소셜회원 중복 검사 -->
+	<select id="checkSosialMember" parameterType="string" resultType="member">
+		SELECT * FROM MEMBER WHERE M_CODE = #{m_code}
+	</select>
+	<!-- 소셜회원 첫 로그인 시 DB저장 -->
+	<insert id="sosialJoinMember">
+		INSERT INTO MEMBER 
+		(M_CODE, NICKNAME, PW, EMAIL, MEMBERCERTIFICATION)
+		VALUES(#{m_code}, #{nickname}, 1111, #{email}, 1)
+	</insert>
+	<!--셔샬회원 정보 가져오기 -->
+	<select id="getSosialMember" parameterType="string" resultType="member">
+		SELECT * FROM MEMBER WHERE M_CODE = #{m_code}
+	</select>
+	
+	<!-- 호원의강사되기 -->
+	<!-- 강사중복 검사 -->
+	<select id="checkTutor" parameterType="string" resultType="tutor">
+		SELECT * FROM TUTOR WHERE M_CODE = #{m_code}
+	</select>
+	<!-- 강사 등록 -->
+	<insert id="joinTutor" parameterType="tutor">
+		INSERT INTO TUTOR VALUES(T_CODE.NEXTVAL, #{m_code}, #{career}, #{introduction}, null) 
+	</insert>
+	<!-- 회원 istutor 값 변경 -->
+	<update id="updateIstutor" parameterType="string">
+		UPDATE MEMBER SET ISTUTOR = '1' WHERE M_CODE = #{m_code}
+	</update>
+	<!-- 강사 정보 가져오기 -->
+	<select id="getTutor" parameterType="string" resultType="tutor">
+		SELECT * FROM TUTOR WHERE M_CODE = #{m_code}
+	</select>
+	
+	
+	<!-- 회원 -->
+	<select id="getMemberList" resultType="member">
+		SELECT * FROM MEMBER WHERE ISTUTOR = '1'
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+

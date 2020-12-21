@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="lecture">
+	
+	<!-- 수강강의 추가하기 -->
+	<insert id="addLecture" parameterType="lecture">
+		INSERT INTO LECTURE VALUES (L_CODE.NEXTVAL, #{m_code}, #{s_code}, #{total_price}, '0')
+	</insert>
+	
+	<!-- class에 들어갔다 오면 이용이 가능해짐. 수강 중인 전체 강의 가져오기 -->
+	<select id="getMyLectureList" parameterType="string" resultType="lecture">
+		SELECT * FROM LECTURE WHERE M_CODE = #{m_code}
+	</select>
+	
+	<!-- 로그인 후 바로 마이페이로 이동 했을 때.수강 중인 전체 강의 가져오기 -->
+	<!-- 조인문을 사용하기 위해 필요한 작업 -->
+	<resultMap type="com.lesson.site.member.MemberVO" id="memberMap">
+		<result property="m_code" column="m_code"/>
+		<result property="nickname" column="nickname"/>
+		<result property="pw" column="pw"/>
+		<result property="email" column="email"/>
+		<result property="istutor" column="istutor"/>
+		<result property="memberCertification" column="memberCertification"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.tutor.TutorVO" id="tutorMap">
+		<result property="t_code" column="t_code"/>
+		<result property="m_code" column="m_code"/>
+		<result property="career" column="career"/>
+		<result property="introduction" column="introduction"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.Class.ClassVO" id="classMap">
+		<result property="s_code" column="s_code"/>
+		<result property="t_code" column="t_code"/>
+		<result property="c_code" column="c_code"/>
+		<result property="class_name" column="class_name"/>
+		<result property="subject_name" column="subject_name"/>
+		<result property="pay" column="pay"/>
+		<result property="class_plan" column="class_plan"/>
+		<result property="class_totla_number" column="class_totla_number"/>
+		<result property="class_level" column="class_level"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.lecture.LectureVO" id="lectureMap">
+		<result property="l_code" column="l_code"/>
+		<result property="m_code" column="m_code"/>
+		<result property="s_code" column="s_code"/>
+		<result property="total_price" column="total_price"/>
+		<result property="numberOfLecture" column="lec_count"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.lecture.GetMyLectureVO" id="getMyLecture">
+		<collection property="lecture" resultMap="lectureMap" />
+		<collection property="classs" resultMap="classMap"/>
+		<collection property="tutor" resultMap="tutorMap" />
+		<collection property="member" resultMap="memberMap" />
+	</resultMap>
+	
+	<select id="lectureList" resultMap="getMyLecture" >
+		SELECT *
+		FROM LECTURE l , CLASS c
+		JOIN TUTOR t
+		ON c.T_CODE = t.T_CODE 
+		JOIN MEMBER m
+		ON t.M_CODE = m.M_CODE
+		WHERE l.S_CODE = c.S_CODE 
+		AND l.M_CODE = #{m_code}
+	</select>
+	<!-- l.L_CODE, c.S_CODE, t.T_CODE, m.M_CODE, c.SUBJECT_NAME, m.NICKNAME , m.EMAIL  -->
+	
+	<select id="lecture" parameterType="string" resultMap="getMyLecture">
+		SELECT *
+		FROM LECTURE l , CLASS c
+		JOIN TUTOR t
+		ON c.T_CODE = t.T_CODE 
+		JOIN MEMBER m
+		ON t.M_CODE = m.M_CODE
+		WHERE l.S_CODE = c.S_CODE 
+		AND l.M_CODE = #{m_code}
+		AND l.L_CODE = '10'
+	</select>
+	
+	<!-- 특정 수강중인 강의 값 가져오기 -->
+	<select id="GetLecture" parameterType="string" resultType="lecture"> 
+		SELECT * FROM LECTURE WHERE L_CODE = #{l_code}
+	</select>
+	
+	<!-- 강의 횟수 증가 -->
+	<update id="updateNumberOfLecture" parameterType="string">
+		UPDATE LECTURE SET LEC_COUNT = LEC_COUNT +1 WHERE L_CODE = #{l_code}
+	</update>
+</mapper>
+
+
+
+

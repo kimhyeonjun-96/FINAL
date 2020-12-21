@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pay">
+	
+	<!-- 결제내역 추가하기 -->
+	<insert id="addPay" parameterType="pay">
+		INSERT INTO PAYMENT VALUES (P_CODE.NEXTVAL, #{l_code}, #{t_code}, #{pay_time})
+	</insert>
+	<!-- 전체 결제내역 가져오기 -->
+	<select id="getPayList" resultType="pay">
+		SELECT * FROM PAYMENT
+	</select>
+	
+</mapper>
+
+
+

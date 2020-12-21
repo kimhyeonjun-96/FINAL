@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="class">
+	
+	<!-- 모든 강의 가져오기 조인문 -->
+	<resultMap type="com.lesson.site.member.MemberVO" id="memberMap">
+		<result property="m_code" column="m_code"/>
+		<result property="nickname" column="nickname"/>
+		<result property="pw" column="pw"/>
+		<result property="email" column="email"/>
+		<result property="istutor" column="istutor"/>
+		<result property="memberCertification" column="memberCertification"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.tutor.TutorVO" id="tutorMap">
+		<result property="t_code" column="t_code"/>
+		<result property="m_code" column="m_code"/>
+		<result property="career" column="career"/>
+		<result property="introduction" column="introduction"/>
+	</resultMap>
+	<resultMap type="com.lesson.site.category.CategoryVO" id="categoryMap">
+		<result property="c_code" column="c_code"/>
+		<result property="category_name" column="category_name"/>
+	</resultMap>
+	
+	<resultMap type="com.lesson.site.Class.ClassVO" id="classMap">
+		<result property="s_code" column="s_code"/>
+		<result property="t_code" column="t_code"/>
+		<result property="c_code" column="c_code"/>
+		<result property="class_name" column="class_name"/>
+		<result property="subject_name" column="subject_name"/>
+		<result property="pay" column="pay"/>
+		<result property="class_plan" column="class_plan"/>
+		<result property="class_totla_number" column="class_totla_number"/>
+		<result property="class_level" column="class_level"/>
+		<result property="class_img" column="class_img"/>
+	</resultMap>
+	
+	<resultMap type="com.lesson.site.Class.GetAllClass" id="getAllClass">
+		<collection property="classs" resultMap="classMap"/>
+		<collection property="category" resultMap="categoryMap"/>
+		<collection property="tutor" resultMap="tutorMap" />
+		<collection property="member" resultMap="memberMap" />
+	</resultMap>
+	
+	
+	<!-- 전체 강의 가져오기 -->
+	<select id="searchAllClass" resultType="class">
+		SELECT * FROM CLASS
+	</select>
+	<!-- 전체강의 가져오기 조인문 -->
+	<select id="getAllClass" resultMap="getAllClass">
+		SELECT *
+		FROM CLASS c
+		JOIN CATEGORY ca
+		ON c.c_code = ca.c_code
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+	</select>
+	<!-- c.s_code, ca.c_code, t.t_code, m.m_code, c.SUBJECT_NAME, ca.CATEGORY_NAME, m.NICKNAME, c.PAY, c.CLASS_TOTLA_NUMBER -->
+	<!-- 특정강의 회원 값 가져오기 -->
+	<select id="searchMember" parameterType="string" resultType="member">
+		SELECT m.m_code, m.nickname, m.email, m.istutor 
+		FROM CLASS c 
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE S_CODE = #{s_code}
+	</select>
+	<!-- 특정강의 강사 값 가져오기 -->
+	<select id="searchTutor" parameterType="string" resultType="tutor">
+		SELECT t.t_code, t.m_code, t.career, t.introduction
+		FROM CLASS c 
+		JOIN TUTOR t
+		ON c.t_code = t.t_code
+		JOIN MEMBER m
+		ON t.m_code = m.m_code
+		WHERE S_CODE = #{s_code}
+	</select>
+	<!-- 특정강의 강의 값 가져오기 -->
+	<select id="searchClass" parameterType="string" resultType="class">
+		SELECT * FROM CLASS WHERE S_CODE = #{s_code}
+	</select>
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
